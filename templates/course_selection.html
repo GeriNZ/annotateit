@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Selection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='icon.png') }}" type="image/x-icon">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-image: url('/static/images/banner.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header h2 {
+            font-size: 1.5em;
+            margin-bottom: 0;
+        }
+
+        main {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .course-selection {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .course-selection button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+
+        .course-selection button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to the Annotation Platform</h1>
+        <h2>Select Your Course</h2>
+    </header>
+    <main>
+        <div class="course-selection">
+            <a href="{{ url_for('index', course='mass_communication') }}">
+                <button>Principles of Mass Communication</button>
+            </a>
+            <a href="{{ url_for('index', course='communication_studies') }}">
+                <button>Principles of Communication Studies</button>
+            </a>
+        </div>
+    </main>
+</body>
+</html>
