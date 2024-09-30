@@ -108,10 +108,7 @@ def annotate(course, week):
         "width": annotation_data['width'],     # Adding width of the annotation
         "height": annotation_data['height'],   # Adding height of the annotation
         "comment": annotation_data.get('comment', ''),
-        "timestamp": timestamp,
-        "status": "active" , 
-        "parent_id": annotation_data.get('parent_id', '')
-        
+        "timestamp": timestamp
     }
     
     # Send data to Google Sheets
@@ -164,61 +161,70 @@ def annotate(course, week):
 @app.route('/delete_annotation/<course>/<week>', methods=['POST'])
 def delete_annotation(course, week):
     annotation_data = request.json
+    file_path = os.path.join('annotations', course, f'{week}.csv')
+    annotations = []
 
-    # Send request to Google Sheets to update status to "deleted"
-    google_data = {
-        "course": course,
-        "week": week,
-        "studentName": annotation_data.get('author', ''),
-        "page": annotation_data['page'],
-        "left": annotation_data['left'],
-        "top": annotation_data['top'],
-        "width": annotation_data['width'],
-        "height": annotation_data['height'],
-        "status": "deleted",  # Mark the status as deleted
-    }
+    try:
+        # Ensure that the file exists
+        if os.path.exists(file_path):
+            with open(file_path, mode='r') as file:
+                reader = csv.reader(file)
+                for row in reader:
+                    # Ensure that the row has at least 8 elements (adjust based on the number of fields you expect)
+                    if len(row) < 8:
+                        print(f"Skipping invalid row: {row}")
+                        continue
 
-    # Send the updated status to Google Sheets
-    google_response = send_to_google_sheets(google_data)
+                    # Check that the page, type, and position (with some tolerance) match the annotation
+                    if (
+                        int(row[0]) == int(annotation_data['page']) and
+                        row[1] == annotation_data['type'] and
+                        abs(float(row[2]) - float(annotation_data['left'])) < 0.01 and
+                        abs(float(row[3]) - float(annotation_data['top'])) < 0.01 and
+                        float(row[4]) == float(annotation_data['width']) and
+                        float(row[5]) == float(annotation_data['height']) and
+                        row[7] == annotation_data['author']
+                    ):
+                        # Mark this annotation as deleted
+                        row[-1] = 'deleted'
+                    annotations.append(row)
 
-    return jsonify({'status': 'success', 'google_response': google_response})
+            # Write the updated annotations back to the CSV file
+            with open(file_path, mode='w', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerows(annotations)
+
+            return jsonify({'status': 'success'})
+        else:
+            return jsonify({'status': 'error', 'message': 'File not found'}), 404
+    except Exception as e:
+        print(f"Error deleting annotation: {e}")
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
 
-
-import requests
 
 @app.route('/load_annotations/<course>/<week>/<int:page>')
 def load_annotations(course, week, page):
-    google_script_url = "https://script.google.com/macros/s/AKfycbwBqh4G_Tkven7f0HjBvZTjTmApsqD4-V8_4kCsMO41t5pCxj4_J8O6M6HDOiRWVTCvIA/exec"
+    file_path = os.path.join('annotations', course, f'{week}.csv')
+    annotations = []
     
-    try:
-        # Log the request parameters
-        print(f"Request to Google Script: Course: {course}, Week: {week}, Page: {page}")
-        
-        # Fetch annotations from Google Sheets via Google Apps Script
-        params = {
-            "course": course,
-            "week": week,
-            "page": page
-        }
-        
-        response = requests.get(google_script_url, params=params)
-        response.raise_for_status()  # Raise an exception if the request fails
-        
-        # Log the response from Google Apps Script
-        print(f"Google Apps Script Response: {response.text}")
-        
-        annotations = response.json().get('annotations', [])
-        print(f"Loaded annotations from Google Sheets: {annotations}")
-        
-        return jsonify({'annotations': annotations})
-    
-    except requests.exceptions.RequestException as e:
-        # Log the error and return a 500 error response
-        print(f"Error fetching annotations from Google Sheets: {e}")
-        return jsonify({'error': 'Unable to fetch annotations'}), 500
-
-
+    if os.path.exists(file_path):
+        with open(file_path, mode='r') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                if len(row) >= 11 and int(row[0]) == page and row[10] == 'active':
+                    annotations.append({
+                        'type': row[1],
+                        'left': row[2],
+                        'top': row[3],
+                        'width': row[4],
+                        'height': row[5],
+                        'comment': row[6],
+                        'author': row[7],
+                        'timestamp': row[8],
+                        'parent_id': row[9]
+                    })
+    return jsonify({'annotations': annotations})
 
 if __name__ == '__main__':
     app.run()
