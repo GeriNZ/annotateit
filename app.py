@@ -140,6 +140,7 @@ def annotate(course, week):
         Page: {annotation_data['page']}
         
         Thank you for your participation!
+        With any questions, please don't reply to this email, but email me at geraldine.bengsch@sta.uwi.edu instead. Thanks!
         """
         
         try:
