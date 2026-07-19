@@ -144,8 +144,7 @@ def annotate(course, week):
         Course: {course_name}
         Week: {week_number}
         Page: {annotation_data['page']}
-        Coordinates: ({annotation_data['left']}, {annotation_data['top']})
-        Size: Width: {annotation_data['width']} px, Height: {annotation_data['height']} px
+        
         
         Thank you for your participation!
         With any questions, please don't reply to this email, but email me at geraldine.bengsch@sta.uwi.edu instead. Thanks!
