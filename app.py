@@ -120,7 +120,8 @@ def annotate(course, week):
     # Define a mapping of course identifiers to their full names
     course_full_names = {
         'mass_communication': 'COMS 2202 Principles of Mass Communication',
-        'communication_studies': 'COMS 2001 Communication Studies'
+        'communication_studies': 'COMS 2001 Communication Studies',
+        'communication_technology': 'COMS 2501 Communication and Technology'
     }
 
     # Get the full course name based on the course identifier
