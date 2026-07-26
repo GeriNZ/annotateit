@@ -1,24 +1,26 @@
 [
-    {
-        "week": "4",
-        "description": "This week, we are looking at the digital identity in society. Article to annotate:  Jose, J. (2025). Theorising Identities in Digital Space: Filters, Avatars and Evolving Ludic Cultures. Digital Crossroads: Integrating Humanities, Science and Technology Edition 1, 62-71"
-    },
-    {
-        "week": "5",
-        "description": "This week, we are looking at Chomsky's Propaganda Model."
-    },
+    
 
     {
         "week": "7",
-        "description": "This week, we explore the role of AI. Article to annotate: Cheng, M., Lee, C., Khadpe, P., Yu, S., Han, D., & Jurafsky, D. (2026). Sycophantic AI decreases prosocial intentions and promotes dependence. Science, 391"
+        "description": "This week, we explore the role of AI in Communication. Article to annotate: Cheng, M., Lee, C., Khadpe, P., Yu, S., Han, D., & Jurafsky, D. (2026). Sycophantic AI decreases prosocial intentions and promotes dependence. Science, 391"
     },
     {
         "week": "8",
-        "description": "This week, we explore the role of new media in shaping mass communication. Article to annotate: Maynard, D. M. B., & Jules, M. A. (2021). Exploring her roots: Black Caribbean hair identity and going natural using social media networks. Journal of Black Psychology, 47(1), 3-30."
+        "description": "This week, we explore the role of algorithms and AI in everyday life. Article to annotate: Zewail, A., Figueroa, A., Graham, J., & Atari, M. (2026). Moral stereotyping in large language models. Proceedings of the National Academy of Sciences, 123(10), e2519941123."
     },
+    {
+        "week": "9",
+        "description": "This week, we are looking at the digital surveillance in society. Article to annotate:  Buolamwini, J., & Gebru, T. (2018, January). Gender shades: Intersectional accuracy disparities in commercial gender classification. In Conference on fairness, accountability and transparency (pp. 77-91). PMLR."
+    },
+    
 
     {
         "week": "11",
-        "description": "This week, we look at the future of communication, including the pitfalls of machine learning and AI. Article to annotate: Sharma, H. (2026). Testing medical AI by fabricating disease: an ethical analysis. Ethics, Medicine and Public Health, 34, 101310."
+        "description": "This week, we look at the future of communication, including the ethics and questions of sustainability of machine learning and AI. Article to annotate: Sharma, H. (2026). Testing medical AI by fabricating disease: an ethical analysis. Ethics, Medicine and Public Health, 34, 101310."
+    },
+    {
+        "week": "12",
+        "description": "This week, we are looking at values in Machine Learning Models. Article to annotate:  Birhane, A., Kalluri, P., Card, D., Agnew, W., Dotan, R., & Bao, M. (2022, June). The values encoded in machine learning research. In Proceedings of the 2022 ACM conference on fairness, accountability, and transparency (pp. 173-184)"
     }
 ]
