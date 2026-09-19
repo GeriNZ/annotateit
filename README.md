@@ -1,8 +1,61 @@
 # AnnotateIt
 
+## Why this project exists
+
+AnnotateIt was designed as a lightweight social annotation tool for university teaching, especially in contexts where commercial annotation platforms may be expensive, institutionally unavailable, or poorly suited to local teaching needs.
+
+The project is shaped by a few practical design choices:
+
+- **Low-friction access:** students do not need to create an account or log in before participating. They identify themselves when commenting, which removes an additional barrier to participation while still allowing comments to be associated with a student name.
+- **Accessible infrastructure:** the application uses common, low-cost tools rather than depending on a commercial annotation platform. This is particularly useful in Global South teaching contexts where subscription costs, procurement processes, or platform availability can limit access.
+- **Google Sheets as the annotation datastore:** annotations are written directly to a Google Sheet rather than stored inside the web application. This makes the data easy to inspect, export, share with teaching assistants, and process with Python scripts for grading or participation analysis.
+- **Easy collaboration with teaching teams:** because annotation data lives in Google Sheets, access can be managed through normal Google sharing permissions. Teaching assistants can review student participation without needing administrative access to the deployed application.
+- **Course-specific adaptation:** readings, course identifiers, and weekly activities can be changed through JSON configuration files and PDF folders without rebuilding the annotation system itself.
+- **Simple deployment:** the application is designed to run locally for development and on Google Cloud Run for teaching use.
+
+The aim is not to reproduce every feature of a commercial social annotation platform, but to provide a small, adaptable system that supports collaborative reading while keeping the technical and administrative overhead manageable.
+
 AnnotateIt is a Flask-based social annotation application for university courses. Students can open assigned PDF readings, place comments directly on the document, reply to other annotations, and optionally receive a copy of their comment by email.
 
 Annotations are stored in a Google Sheet through a Google Apps Script web app. The Flask application can run locally or be deployed to Google Cloud Run.
+
+## How it works
+
+AnnotateIt keeps the student workflow deliberately simple. Students move from a course page to the assigned reading and then annotate directly on the PDF without creating a separate platform account.
+
+### 1. Select a course
+
+The landing page presents the available courses. Course content is kept separate so the same application can support several modules.
+
+<p align="center">
+  <img src="docs/images/course-selection.png" alt="AnnotateIt course selection screen" width="900">
+</p>
+
+### 2. Select the assigned reading
+
+Within each course, students see the readings currently available for annotation. Reading descriptions and week numbers are loaded from the course JSON configuration files.
+
+<p align="center">
+  <img src="docs/images/reading-selection.png" alt="AnnotateIt weekly reading selection screen" width="900">
+</p>
+
+### 3. Read, annotate and respond
+
+The PDF viewer allows students to place comments at specific locations in the reading, view classmates' annotations, and reply to existing conversations. Students provide their name when entering the annotation environment, but there is no separate account-registration or login process.
+
+<p align="center">
+  <img src="docs/images/pdf-annotation-view.png" alt="AnnotateIt PDF viewer showing student annotations" width="650">
+</p>
+
+Annotations are sent through the Flask backend to Google Apps Script and stored in Google Sheets. This keeps the deployed application lightweight while making the annotation data directly available to the teaching team for review, sharing with teaching assistants, export, and analysis with Python.
+
+---
+
+## Related publication
+
+The pedagogical rationale behind this project is discussed in:
+
+> Bengsch, G. (2026). Annotating Understanding: Reclaiming Caribbean Student Voices Through Social Reading. In *Narrative Methodologies in Educational Research* (pp. 119–154). IGI Global Scientific Publishing.
 
 ## Features
 
@@ -736,10 +789,39 @@ Annotations are not stored inside the Flask application or repository.
 
 Google Sheets is the only persistent annotation datastore. The application sends annotation data to Google Apps Script, which writes it to the `Annotations` worksheet.
 
+The repository should not contain an `annotations/` data folder.
 
 Files written to a Cloud Run container filesystem are not suitable as durable application storage.
 
 ---
 
 # License
+
+This project is licensed under the MIT License.
+
+```text
+MIT License
+
+Copyright (c) 2026 Geraldine Bengsch
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+A standalone [`LICENSE`](LICENSE) file is also included in the repository.
 
