@@ -9,6 +9,7 @@ import requests
 from flask_mail import Mail, Message
 
 load_dotenv(override=True)
+GOOGLE_SCRIPT_URL = os.getenv("GOOGLE_SCRIPT_URL")
 
 app = Flask(__name__)
 CORS(app)
@@ -30,15 +31,28 @@ mail = Mail(app)
 
 
 def send_to_google_sheets(data):
-    google_script_url = "https://script.google.com/macros/s/AKfycbwBqh4G_Tkven7f0HjBvZTjTmApsqD4-V8_4kCsMO41t5pCxj4_J8O6M6HDOiRWVTCvIA/exec"
-    print(f"Using Google Script URL: {google_script_url}")  # Ensure you have the Google Script URL in your .env
+    if not GOOGLE_SCRIPT_URL:
+        return {
+            "status": "failure",
+            "error": "GOOGLE_SCRIPT_URL is not configured"
+        }
+
     try:
-        response = requests.post(google_script_url, json=data)
-        response.raise_for_status()  # Raise an exception for HTTP errors
+        response = requests.post(
+            GOOGLE_SCRIPT_URL,
+            json=data
+        )
+
+        response.raise_for_status()
         return response.json()
+
     except requests.exceptions.RequestException as e:
         print(f"Error sending to Google Sheets: {e}")
-        return {"status": "failure", "error": str(e)}
+
+        return {
+            "status": "failure",
+            "error": str(e)
+        }
 
 def load_readings(course):
     with open(f'readings_{course}.json', 'r') as f:
@@ -189,34 +203,44 @@ import requests
 
 @app.route('/load_annotations/<course>/<week>/<int:page>')
 def load_annotations(course, week, page):
-    google_script_url = "https://script.google.com/macros/s/AKfycbwBqh4G_Tkven7f0HjBvZTjTmApsqD4-V8_4kCsMO41t5pCxj4_J8O6M6HDOiRWVTCvIA/exec"
-    
     try:
-        # Log the request parameters
-        print(f"Request to Google Script: Course: {course}, Week: {week}, Page: {page}")
-        
-        # Fetch annotations from Google Sheets via Google Apps Script
+        print(
+            f"Request to Google Script: "
+            f"Course: {course}, Week: {week}, Page: {page}"
+        )
+
         params = {
             "course": course,
             "week": week,
             "page": page
         }
-        
-        response = requests.get(google_script_url, params=params)
-        response.raise_for_status()  # Raise an exception if the request fails
-        
-        # Log the response from Google Apps Script
+
+        response = requests.get(
+            GOOGLE_SCRIPT_URL,
+            params=params
+        )
+
+        response.raise_for_status()
+
         print(f"Google Apps Script Response: {response.text}")
-        
+
         annotations = response.json().get('annotations', [])
-        print(f"Loaded annotations from Google Sheets: {annotations}")
-        
-        return jsonify({'annotations': annotations})
-    
+
+        print(
+            f"Loaded annotations from Google Sheets: "
+            f"{annotations}"
+        )
+
+        return jsonify({
+            'annotations': annotations
+        })
+
     except requests.exceptions.RequestException as e:
-        # Log the error and return a 500 error response
         print(f"Error fetching annotations from Google Sheets: {e}")
-        return jsonify({'error': 'Unable to fetch annotations'}), 500
+
+        return jsonify({
+            'error': 'Unable to fetch annotations'
+        }), 500
 
 
 
