@@ -29,3 +29,6 @@ __pycache__/
 Thumbs.db
 
 annotations
+templates/stuff.html
+templates/stuff1.html
+templates/applocal.py
