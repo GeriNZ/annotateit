@@ -41,7 +41,7 @@ Within each course, students see the readings currently available for annotation
 
 ### 3. Read, annotate and respond
 
-The PDF viewer allows students to place comments at specific locations in the reading, view classmates' annotations, and reply to existing conversations. Students provide their name when entering the annotation environment, but there is no separate account-registration or login process.
+The PDF viewer allows students to place comments at specific locations in the reading, view classmates' annotations, and reply to existing conversations. Based on my own work flow, there is a word counter that expects students to submit a comment of 25-150 words. Students provide their name when entering the annotation environment, but there is no separate account-registration or login process. For deletion, students need to enter their name again to avoid accidentally deleting other students' work. As a fail safe, deleted comments are still stored in the spreadsheet. Students can also add their email address to have the comment send to them. 
 
 <p align="center">
   <img src="docs/images/pdf-annotation-view.png" alt="AnnotateIt PDF viewer showing student annotations" width="650">
